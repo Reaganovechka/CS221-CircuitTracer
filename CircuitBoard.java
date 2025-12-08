@@ -48,9 +48,24 @@ public class CircuitBoard {
 		//TODO: parse the given file to populate the char[][]
 		// throw FileNotFoundException if Scanner cannot read the file
 		// throw InvalidFileFormatException if any issues are encountered while parsing the file
+		//Get Rows and Columns
+		String firstLine = fileScan.nextLine().trim();
+		Scanner lineScan = new Scanner(firstLine);
 		
-		ROWS = 0; //replace with initialization statements using values from file
-		COLS = 0;
+		ROWS = lineScan.nextInt(); 
+		COLS = lineScan.nextInt();
+
+		board = new char[ROWS][COLS];
+
+		//read in data
+		for (int row = 0; row < board.length; row++) {
+			String line = fileScan.nextLine().trim();
+			lineScan = new Scanner(line);
+			for (int col = 0; col < board[row].length; col++){
+				
+				}
+			}
+		}
 		
 		fileScan.close();
 	}
