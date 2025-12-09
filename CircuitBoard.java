@@ -42,7 +42,7 @@ public class CircuitBoard {
 	 * @throws FileNotFoundException if Scanner cannot open or read the file
 	 * @throws InvalidFileFormatException for any file formatting or content issue
 	 */
-	public CircuitBoard(String filename) throws FileNotFoundException {
+	public CircuitBoard(String filename) throws FileNotFoundException, InvalidFileFormatException {
 		Scanner fileScan = null;
 		Scanner lineScan = null;
 		
@@ -60,8 +60,10 @@ public class CircuitBoard {
 			ROWS = Integer.parseInt(lineScan.next()); 
 			COLS = Integer.parseInt(lineScan.next()); 
 			if (lineScan.hasNext()){
+				lineScan.close();
 				throw new InvalidFileFormatException("Invalid file: too many row/column arguments");
 			}
+			lineScan.close();
 		
 			board = new char[ROWS][COLS];
 
@@ -69,20 +71,21 @@ public class CircuitBoard {
 			for (int row = 0; row < board.length; row++) {
 				String line = fileScan.nextLine().trim();
 				lineScan = new Scanner(line);
-				if (line.isEmpty()) {
-					lineScan.close();
-					throw new InvalidFileFormatException("Invalid file: not enough rows");
-				}
-				for (int col = 0; col < board[row].length; col++){
-					if (!lineScan.hasNext()) {
-						lineScan.close();
-						throw new InvalidFileFormatException("Invalid file: not enought columns");
+				try {
+					if (line.isEmpty()) {
+						throw new InvalidFileFormatException("Invalid file: not enough rows");
 					}
-					board[row][col] = lineScan.next().charAt(0);			
-				}
-				if (lineScan.hasNext()) {
+					for (int col = 0; col < board[row].length; col++){
+						if (!lineScan.hasNext()) {
+							throw new InvalidFileFormatException("Invalid file: not enought columns");
+						}
+						board[row][col] = lineScan.next().charAt(0);			
+					}
+					if (lineScan.hasNext()) {
+						throw new InvalidFileFormatException("Invalid file: too many values in row "+(row+1));
+					}
+				} finally {
 					lineScan.close();
-					throw new InvalidFileFormatException("Invalid file: too many values in row "+(row+1));
 				}
 			}
 
@@ -92,12 +95,16 @@ public class CircuitBoard {
 					throw new InvalidFileFormatException("Invalid file: too many rows");
 				}
 			}
+		} catch(NumberFormatException e){
+			// invalid integer values for rows/cols in the header
+			throw new InvalidFileFormatException("Invalid file: invalid row/column format");
+		} finally {
+			if (fileScan != null) {
+				fileScan.close();
+			}
 		}
-		 
-		board.toString();
 
-		fileScan.close();
-		lineScan.close();
+		
 	}
 
 	/**

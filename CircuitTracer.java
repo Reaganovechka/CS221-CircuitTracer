@@ -27,6 +27,7 @@ public class CircuitTracer{
 	private void printUsage() {
 		//TODO: print out clear usage instructions when there are problems with
 		// any command line args
+		System.out.println("Please use 3 arguments");
 	}
 	
 	/** 
