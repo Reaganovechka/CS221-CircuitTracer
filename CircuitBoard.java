@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * Represents a 2D circuit board as read from an input file.
- *  
+ * 
  * @author mvail
  */
 public class CircuitBoard {
@@ -16,15 +16,15 @@ public class CircuitBoard {
 	/** location of row,col for '2' */
 	private Point endingPoint;
 
-	//constants you may find useful
-	private final int ROWS; //initialized in constructor
-	private final int COLS; //initialized in constructor
-	private final char OPEN = 'O';	//capital 'o', an open position
-	private final char CLOSED = 'X';//a blocked position
-	private final char TRACE = 'T';	//part of the trace connecting 1 to 2
-	private final char START = '1';	//the starting component
-	private final char END = '2';	//the ending component
-	private final String ALLOWED_CHARS = "OXT12"; //useful for validating with indexOf
+	// constants you may find useful
+	private final int ROWS; // initialized in constructor
+	private final int COLS; // initialized in constructor
+	private final char OPEN = 'O'; // capital 'o', an open position
+	private final char CLOSED = 'X';// a blocked position
+	private final char TRACE = 'T'; // part of the trace connecting 1 to 2
+	private final char START = '1'; // the starting component
+	private final char END = '2'; // the ending component
+	private final String ALLOWED_CHARS = "OXT12"; // useful for validating with indexOf
 
 	/** Construct a CircuitBoard from a given board input file, where the first
 	 * line contains the number of rows and columns as ints and each subsequent
@@ -43,34 +43,65 @@ public class CircuitBoard {
 	 * @throws InvalidFileFormatException for any file formatting or content issue
 	 */
 	public CircuitBoard(String filename) throws FileNotFoundException {
-		Scanner fileScan = new Scanner(new File(filename));
+		Scanner fileScan = null;
+		Scanner lineScan = null;
+		
 		
 		//TODO: parse the given file to populate the char[][]
 		// throw FileNotFoundException if Scanner cannot read the file
 		// throw InvalidFileFormatException if any issues are encountered while parsing the file
 		//Get Rows and Columns
-		String firstLine = fileScan.nextLine().trim();
-		Scanner lineScan = new Scanner(firstLine);
 		
-		ROWS = lineScan.nextInt(); 
-		COLS = lineScan.nextInt();
+		try{
+			fileScan = new Scanner(new File(filename));
+			
+			String firstLine = fileScan.nextLine().trim();
+			lineScan = new Scanner(firstLine);
+			ROWS = Integer.parseInt(lineScan.next()); 
+			COLS = Integer.parseInt(lineScan.next()); 
+			if (lineScan.hasNext()){
+				throw new InvalidFileFormatException("Invalid file: too many row/column arguments");
+			}
+		
+			board = new char[ROWS][COLS];
 
-		board = new char[ROWS][COLS];
+			//read in data
+			for (int row = 0; row < board.length; row++) {
+				String line = fileScan.nextLine().trim();
+				lineScan = new Scanner(line);
+				if (line.isEmpty()) {
+					lineScan.close();
+					throw new InvalidFileFormatException("Invalid file: not enough rows");
+				}
+				for (int col = 0; col < board[row].length; col++){
+					if (!lineScan.hasNext()) {
+						lineScan.close();
+						throw new InvalidFileFormatException("Invalid file: not enought columns");
+					}
+					board[row][col] = lineScan.next().charAt(0);			
+				}
+				if (lineScan.hasNext()) {
+					lineScan.close();
+					throw new InvalidFileFormatException("Invalid file: too many values in row "+(row+1));
+				}
+			}
 
-		//read in data
-		for (int row = 0; row < board.length; row++) {
-			String line = fileScan.nextLine().trim();
-			lineScan = new Scanner(line);
-			for (int col = 0; col < board[row].length; col++){
-				
+			if (fileScan.hasNextLine()){
+				String extraLine = fileScan.nextLine().trim();
+				if(!extraLine.isEmpty()){
+					throw new InvalidFileFormatException("Invalid file: too many rows");
 				}
 			}
 		}
-		
+		 
+		board.toString();
+
 		fileScan.close();
+		lineScan.close();
 	}
-	
-	/** Copy constructor - duplicates original board
+
+	/**
+	 * Copy constructor - duplicates original board
 	 * 
 	 * @param original board to copy
 	 */
@@ -82,8 +113,11 @@ public class CircuitBoard {
 		COLS = original.numCols();
 	}
 
-	/** Utility method for copy constructor
-	 * @return copy of board array */
+	/**
+	 * Utility method for copy constructor
+	 * 
+	 * @return copy of board array
+	 */
 	private char[][] getBoard() {
 		char[][] copy = new char[board.length][board[0].length];
 		for (int row = 0; row < board.length; row++) {
@@ -93,8 +127,10 @@ public class CircuitBoard {
 		}
 		return copy;
 	}
-	
-	/** Return the char at board position x,y
+
+	/**
+	 * Return the char at board position x,y
+	 * 
 	 * @param row row coordinate
 	 * @param col col coordinate
 	 * @return char at row, col
@@ -102,11 +138,13 @@ public class CircuitBoard {
 	public char charAt(int row, int col) {
 		return board[row][col];
 	}
-	
-	/** Return whether given board position is open
+
+	/**
+	 * Return whether given board position is open
+	 * 
 	 * @param row
 	 * @param col
-	 * @return true if position at (row, col) is open 
+	 * @return true if position at (row, col) is open
 	 */
 	public boolean isOpen(int row, int col) {
 		if (row < 0 || row >= board.length || col < 0 || col >= board[row].length) {
@@ -114,8 +152,10 @@ public class CircuitBoard {
 		}
 		return board[row][col] == OPEN;
 	}
-	
-	/** Set given position to be a 'T'
+
+	/**
+	 * Set given position to be a 'T'
+	 * 
 	 * @param row
 	 * @param col
 	 * @throws OccupiedPositionException if given position is not open
@@ -127,28 +167,30 @@ public class CircuitBoard {
 			throw new OccupiedPositionException("row " + row + ", col " + col + "contains '" + board[row][col] + "'");
 		}
 	}
-	
+
 	/** @return starting Point(row,col) */
 	public Point getStartingPoint() {
 		return new Point(startingPoint);
 	}
-	
+
 	/** @return ending Point(row,col) */
 	public Point getEndingPoint() {
 		return new Point(endingPoint);
 	}
-	
+
 	/** @return number of rows in this CircuitBoard */
 	public int numRows() {
 		return ROWS;
 	}
-	
+
 	/** @return number of columns in this CircuitBoard */
 	public int numCols() {
 		return COLS;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
@@ -161,5 +203,5 @@ public class CircuitBoard {
 		}
 		return str.toString();
 	}
-	
+
 }// class CircuitBoard

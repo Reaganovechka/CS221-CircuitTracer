@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * 
  * @author mvail
  */
-public class CircuitTracer {
+public class CircuitTracer{
 
 	/** Launch the program. 
 	 * 
@@ -42,6 +42,8 @@ public class CircuitTracer {
 		}
 		//TODO: initialize the Storage to use either a stack or queue
 		//TODO: read in the CircuitBoard from the given file
+		String fileName = args[2];
+		CircuitBoard(fileName);
 		//TODO: run the search for best paths
 		//TODO: output results to console or GUI, according to specified choice
 	}
