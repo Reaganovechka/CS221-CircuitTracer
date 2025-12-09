@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -43,7 +44,15 @@ public class CircuitTracer{
 		//TODO: initialize the Storage to use either a stack or queue
 		//TODO: read in the CircuitBoard from the given file
 		String fileName = args[2];
-		CircuitBoard(fileName);
+		CircuitBoard board;
+		try {
+			board = new CircuitBoard(fileName);
+			System.out.println(board.toString());
+		} catch (FileNotFoundException e) {
+			System.err.println("Input file not found: " + fileName);
+			return;
+		}
+
 		//TODO: run the search for best paths
 		//TODO: output results to console or GUI, according to specified choice
 	}
