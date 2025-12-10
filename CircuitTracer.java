@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+
 /**
  * Search for shortest paths between start and end points on a circuit board
  * as read from an input file using either a stack or queue as the underlying
@@ -25,9 +26,7 @@ public class CircuitTracer{
 
 	/** Print instructions for running CircuitTracer from the command line. */
 	private void printUsage() {
-		//TODO: print out clear usage instructions when there are problems with
-		// any command line args
-		System.out.println("Please use 3 arguments");
+		System.out.println("Invalid command: please choose stack(-s) OR queue(-q), console mode(-c) OR gui mode(-g), AND provide a file name");
 	}
 	
 	/** 
@@ -37,15 +36,27 @@ public class CircuitTracer{
 	 * @param args command line arguments passed through from main()
 	 */
 	public CircuitTracer(String[] args) {
-		//TODO: parse and validate command line args - first validation provided
-		if (args.length != 3) {
-			printUsage();
-			return; //exit the constructor immediately
-		}
-		//TODO: initialize the Storage to use either a stack or queue
-		//TODO: read in the CircuitBoard from the given file
 		String fileName = args[2];
 		CircuitBoard board;
+		Storage<TraceState> stateStore;
+		if (args.length != 3) {
+			printUsage();
+
+			return; //exit the constructor immediately
+		}
+		if (!args[0].equals("-s") && !args[0].equals("-q")){
+			printUsage();
+			return;
+		}
+		if (!args[1].equals("-c") && !args[1].equals("-g")) {
+			printUsage();
+			return;
+		}
+		//TODO: initialize the Storage to use either a stack or queue
+		switch (args[0]) {
+			case "-q" :
+				stateStore
+		}
 		try {
 			board = new CircuitBoard(fileName);
 			System.out.println(board.toString());

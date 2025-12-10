@@ -45,6 +45,9 @@ public class CircuitBoard {
 	public CircuitBoard(String filename) throws FileNotFoundException, InvalidFileFormatException {
 		Scanner fileScan = null;
 		Scanner lineScan = null;
+		int startingPointCount = 0;
+		int endingPointCount = 0;
+
 		
 		
 		//TODO: parse the given file to populate the char[][]
@@ -79,7 +82,28 @@ public class CircuitBoard {
 						if (!lineScan.hasNext()) {
 							throw new InvalidFileFormatException("Invalid file: not enought columns");
 						}
-						board[row][col] = lineScan.next().charAt(0);			
+						board[row][col] = lineScan.next().charAt(0);
+						if (!ALLOWED_CHARS.contains(String.valueOf(board[row][col]))){
+							throw new InvalidFileFormatException("Invalid file: unkown value detected");
+						}		
+						if (board[row][col] == START){
+							if(startingPointCount > 0){
+								throw new InvalidFileFormatException("Invalid file: more than 1 starting point");
+							} else {
+							startingPoint = new Point(row, col);
+							startingPointCount++;
+							}
+							
+
+						} else if (board[row][col] == END) {
+							if(endingPointCount == 1) {
+								throw new InvalidFileFormatException("Invalid file: more than 1 ending point");
+
+							} else {
+								endingPoint = new Point(row,col);
+								endingPointCount++;
+							}
+						}
 					}
 					if (lineScan.hasNext()) {
 						throw new InvalidFileFormatException("Invalid file: too many values in row "+(row+1));
@@ -94,6 +118,11 @@ public class CircuitBoard {
 				if(!extraLine.isEmpty()){
 					throw new InvalidFileFormatException("Invalid file: too many rows");
 				}
+			}
+			if (startingPointCount == 0) {
+				throw new InvalidFileFormatException("Invalid file: no starting point");
+			} else if (endingPointCount == 0) {
+				throw new InvalidFileFormatException("Invalid file: no ending point");
 			}
 		} catch(NumberFormatException e){
 			// invalid integer values for rows/cols in the header
