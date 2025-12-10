@@ -36,7 +36,7 @@ public class CircuitTracer{
 	 * @param args command line arguments passed through from main()
 	 */
 	public CircuitTracer(String[] args) {
-		String fileName = args[2];
+		
 		CircuitBoard board;
 		Storage<TraceState> stateStore;
 		if (args.length != 3) {
@@ -52,21 +52,37 @@ public class CircuitTracer{
 			printUsage();
 			return;
 		}
-		//TODO: initialize the Storage to use either a stack or queue
 		switch (args[0]) {
 			case "-q" :
-				stateStore
+				stateStore = Storage.getQueueInstance();
+				break;
+			case "-s" :
+				stateStore = Storage.getStackInstance();
+				break;
 		}
+		String fileName = args[2];
 		try {
 			board = new CircuitBoard(fileName);
 			System.out.println(board.toString());
 		} catch (FileNotFoundException e) {
 			System.err.println("Input file not found: " + fileName);
 			return;
+		} catch (InvalidFileFormatException e) {
+			System.err.println("Unable to load input file: " + fileName);
+			System.err.println("InvalidFileFormatException: " + e.getMessage());
+			return;
 		}
 
 		//TODO: run the search for best paths
+
 		//TODO: output results to console or GUI, according to specified choice
+		switch(args[1]) {
+			case "-c" :
+				//TODO
+			case "-g" :
+				//TODO
+		}
+
 	}
 	
 } // class CircuitTracer

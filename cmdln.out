@@ -1,1 +1,1 @@
-Please use 3 arguments
+Invalid command: please choose stack(-s) OR queue(-q), console mode(-c) OR gui mode(-g), AND provide a file name
