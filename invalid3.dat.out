@@ -1,2 +1,2 @@
 Unable to load input file: invalid3.dat
-InvalidFileFormatExceptionInvalid file: no ending point
+InvalidFileFormatException: no ending point

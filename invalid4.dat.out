@@ -1,2 +1,2 @@
 Unable to load input file: invalid4.dat
-InvalidFileFormatExceptionInvalid file: no starting point
+InvalidFileFormatException: no starting point

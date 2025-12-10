@@ -1,2 +1,2 @@
 Unable to load input file: invalid5.dat
-InvalidFileFormatExceptionInvalid file: unkown value detected
+InvalidFileFormatException: unkown value detected

@@ -65,7 +65,7 @@ public class CircuitTracer{
 			board = new CircuitBoard(fileName);
 			System.out.println(board.toString());
 		} catch (FileNotFoundException e) {
-			System.err.println("Input file not found: " + fileName);
+			System.err.println("FileNotFoundException: " + fileName);
 			return;
 		} catch (InvalidFileFormatException e) {
 			System.err.println("Unable to load input file: " + fileName);

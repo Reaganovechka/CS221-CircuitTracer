@@ -1,2 +1,2 @@
 Unable to load input file: invalid6.dat
-InvalidFileFormatExceptionInvalid file: too many values in row 3
+InvalidFileFormatException: too many values in row 3

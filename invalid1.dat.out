@@ -1,2 +1,2 @@
 Unable to load input file: invalid1.dat
-InvalidFileFormatExceptionmultiple starting points
+InvalidFileFormatException: multiple starting points
