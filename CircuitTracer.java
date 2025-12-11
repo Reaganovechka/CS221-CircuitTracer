@@ -64,7 +64,6 @@ public class CircuitTracer{
 		String fileName = args[2];
 		try {
 			board = new CircuitBoard(fileName);
-			System.out.println(board.toString());
 		} catch (FileNotFoundException e) {
 			System.err.println("FileNotFoundException: " + fileName);
 			return;
@@ -84,7 +83,7 @@ public class CircuitTracer{
 			stateStore.store(newState);
 		} 
 		if (board.isOpen((int)start.getX(),(int)start.getY()+1)) { // Check below
-			TraceState newState = new TraceState(board, (int)start.getX()-1,(int)start.getY()+1);
+			TraceState newState = new TraceState(board, (int)start.getX(),(int)start.getY()+1);
 			stateStore.store(newState);
 		}
 		if (board.isOpen((int)start.getX()-1,(int)start.getY())){ // Check left
