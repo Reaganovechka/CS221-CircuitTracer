@@ -87,7 +87,7 @@ public class CircuitTracer{
 			stateStore.store(newState);
 		}
 		if (board.isOpen((int)start.getX()-1,(int)start.getY())){ // Check left
-			TraceState newState = new TraceState(board, (int)start.getX()-1, (int)start.getY()+1);
+			TraceState newState = new TraceState(board, (int)start.getX()-1, (int)start.getY());
 			stateStore.store(newState);
 		}
 		if (board.isOpen((int)start.getX(),(int)start.getY()-1)){ // Check above
@@ -132,6 +132,7 @@ public class CircuitTracer{
 				}
 				break;
 			case "-g" :
+				System.out.println("GUI unsupported");
 				break;
 		}
 
