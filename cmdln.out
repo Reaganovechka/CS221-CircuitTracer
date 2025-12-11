@@ -1,1 +1,1 @@
-Invalid command: please choose stack(-s) OR queue(-q), console mode(-c) OR gui mode(-g), AND provide a file name
+Invalid comman: expected java CircuitTracer followed by queue(-q) OR stack(-s), AND console(-c) OR gui(-g), AND fileName

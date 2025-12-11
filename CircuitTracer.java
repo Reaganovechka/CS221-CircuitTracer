@@ -1,6 +1,7 @@
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,7 +27,7 @@ public class CircuitTracer{
 
 	/** Print instructions for running CircuitTracer from the command line. */
 	private void printUsage() {
-		System.out.println("Invalid command: please choose stack(-s) OR queue(-q), console mode(-c) OR gui mode(-g), AND provide a file name");
+		System.out.println("Invalid command: expected java CircuitTracer followed by queue(-q) OR stack(-s), AND console(-c) OR gui(-g), AND fileName");
 	}
 	
 	/** 
@@ -74,7 +75,13 @@ public class CircuitTracer{
 		}
 
 		//TODO: run the search for best paths
-
+		List<TraceState> bestPaths = new ArrayList<>();
+		//Add new initial TraceState onlect to stateStore for each open position adjacent to the starting component
+		Point start = board.getStartingPoint();
+		Point end = board.getEndingPoint();
+		if (board.isOpen((int)start.getX()+1,(int)start.getY())){
+			
+		}
 		//TODO: output results to console or GUI, according to specified choice
 		switch(args[1]) {
 			case "-c" :
