@@ -39,7 +39,7 @@ public class CircuitTracer{
 	public CircuitTracer(String[] args) {
 		
 		CircuitBoard board;
-		Storage<TraceState> stateStore;
+		Storage<TraceState> stateStore = null;
 		if (args.length != 3) {
 			printUsage();
 
@@ -78,16 +78,62 @@ public class CircuitTracer{
 		List<TraceState> bestPaths = new ArrayList<>();
 		//Add new initial TraceState onlect to stateStore for each open position adjacent to the starting component
 		Point start = board.getStartingPoint();
-		Point end = board.getEndingPoint();
-		if (board.isOpen((int)start.getX()+1,(int)start.getY())){
-			
+		int shortestPath = 0;
+		if (board.isOpen((int)start.getX()+1,(int)start.getY())){ // Check right
+			TraceState newState = new TraceState(board, (int)start.getX()+1,(int)start.getY());
+			stateStore.store(newState);
+		} 
+		if (board.isOpen((int)start.getX(),(int)start.getY()+1)) { // Check below
+			TraceState newState = new TraceState(board, (int)start.getX()-1,(int)start.getY()+1);
+			stateStore.store(newState);
+		}
+		if (board.isOpen((int)start.getX()-1,(int)start.getY())){ // Check left
+			TraceState newState = new TraceState(board, (int)start.getX()-1, (int)start.getY()+1);
+			stateStore.store(newState);
+		}
+		if (board.isOpen((int)start.getX(),(int)start.getY()-1)){ // Check above
+			TraceState newState = new TraceState(board, (int)start.getX(),(int)start.getY()-1);
+			stateStore.store(newState);
+		}
+		while (!stateStore.isEmpty()) {
+			TraceState currentState = stateStore.retrieve();
+			if (currentState.isSolution()) {
+				if (bestPaths.isEmpty() || currentState.pathLength() == shortestPath){
+					bestPaths.add(currentState);
+					shortestPath = currentState.pathLength();
+				} else if (currentState.pathLength() < shortestPath){
+					bestPaths.clear();
+					bestPaths.add(currentState);
+					shortestPath = currentState.pathLength();
+				} 
+			} else { // Generate all valid next TraceState objects and add them to storage
+					if (currentState.isOpen(currentState.getRow()+1, currentState.getCol())) { // Check right
+						TraceState newState = new TraceState(currentState,currentState.getRow()+1, currentState.getCol());
+						stateStore.store(newState);
+					}
+					if (currentState.isOpen(currentState.getRow(), currentState.getCol()+1)) { // Check below
+						TraceState newState = new TraceState(currentState, currentState.getRow(), currentState.getCol()+1);
+						stateStore.store(newState);
+					}
+					if (currentState.isOpen(currentState.getRow()-1, currentState.getCol())) { // Check left
+						TraceState newState = new TraceState(currentState, currentState.getRow()-1, currentState.getCol());
+						stateStore.store(newState);
+					}
+					if (currentState.isOpen(currentState.getRow(), currentState.getCol()-1)) { // Check above
+						TraceState newState = new TraceState(currentState, currentState.getRow(), currentState.getCol()-1);	
+						stateStore.store(newState);
+					}
+			}
 		}
 		//TODO: output results to console or GUI, according to specified choice
 		switch(args[1]) {
 			case "-c" :
-				//TODO
+				for(int i = 0; i < bestPaths.size(); i++){
+					System.out.println(bestPaths.get(i).toString());
+				}
+				break;
 			case "-g" :
-				//TODO
+				break;
 		}
 
 	}
