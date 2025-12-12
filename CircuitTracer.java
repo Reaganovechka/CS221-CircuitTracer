@@ -73,30 +73,37 @@ public class CircuitTracer{
 			return;
 		}
 
-		//TODO: run the search for best paths
 		List<TraceState> bestPaths = new ArrayList<>();
-		//Add new initial TraceState onlect to stateStore for each open position adjacent to the starting component
+		
 		Point start = board.getStartingPoint();
 		int shortestPath = 0;
+		int totalStates = 0;
+		int totalSolutions = 0;
 		if (board.isOpen((int)start.getX()+1,(int)start.getY())){ // Check right
 			TraceState newState = new TraceState(board, (int)start.getX()+1,(int)start.getY());
 			stateStore.store(newState);
+			totalStates++;
 		} 
 		if (board.isOpen((int)start.getX(),(int)start.getY()+1)) { // Check below
 			TraceState newState = new TraceState(board, (int)start.getX(),(int)start.getY()+1);
 			stateStore.store(newState);
+			totalStates++;
 		}
 		if (board.isOpen((int)start.getX()-1,(int)start.getY())){ // Check left
 			TraceState newState = new TraceState(board, (int)start.getX()-1, (int)start.getY());
 			stateStore.store(newState);
+			totalStates++;
 		}
 		if (board.isOpen((int)start.getX(),(int)start.getY()-1)){ // Check above
 			TraceState newState = new TraceState(board, (int)start.getX(),(int)start.getY()-1);
 			stateStore.store(newState);
+			totalStates++;
 		}
 		while (!stateStore.isEmpty()) {
 			TraceState currentState = stateStore.retrieve();
 			if (currentState.isSolution()) {
+				totalSolutions++;
+				System.out.println("Total traces before solution #" + totalSolutions + ": " + totalStates);
 				if (bestPaths.isEmpty() || currentState.pathLength() == shortestPath){
 					bestPaths.add(currentState);
 					shortestPath = currentState.pathLength();
@@ -109,26 +116,31 @@ public class CircuitTracer{
 					if (currentState.isOpen(currentState.getRow()+1, currentState.getCol())) { // Check right
 						TraceState newState = new TraceState(currentState,currentState.getRow()+1, currentState.getCol());
 						stateStore.store(newState);
+						totalStates++;
 					}
 					if (currentState.isOpen(currentState.getRow(), currentState.getCol()+1)) { // Check below
 						TraceState newState = new TraceState(currentState, currentState.getRow(), currentState.getCol()+1);
 						stateStore.store(newState);
+						totalStates++;
 					}
 					if (currentState.isOpen(currentState.getRow()-1, currentState.getCol())) { // Check left
 						TraceState newState = new TraceState(currentState, currentState.getRow()-1, currentState.getCol());
 						stateStore.store(newState);
+						totalStates++;
 					}
 					if (currentState.isOpen(currentState.getRow(), currentState.getCol()-1)) { // Check above
 						TraceState newState = new TraceState(currentState, currentState.getRow(), currentState.getCol()-1);	
 						stateStore.store(newState);
+						totalStates++;
 					}
 			}
 		}
-		//TODO: output results to console or GUI, according to specified choice
 		switch(args[1]) {
 			case "-c" :
 				for(int i = 0; i < bestPaths.size(); i++){
 					System.out.println(bestPaths.get(i).toString());
+					System.out.println("Total number of search states " + totalStates);
+					System.out.println("Total number of solutions found: " + totalSolutions);
 				}
 				break;
 			case "-g" :
