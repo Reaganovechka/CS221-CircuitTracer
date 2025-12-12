@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Represents a potential path through a CircuitBoard - a search state for CircuitTracer.
  * 
- * @author mvail, Reagan Ovechka
+ * @author mvail
  */
 public class TraceState {
 	private CircuitBoard board;		//state of the current board
