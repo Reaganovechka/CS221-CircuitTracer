@@ -12,16 +12,12 @@ OVERVIEW:
 
 INCLUDED FILES:
 
- List the files required for the project with a brief
- explanation of why each is included.
-
- e.g.
- * CircuitTracer.java - source file
+ * CircuitTracer.java - source file, contains main/driver class
  * CircuitBoard.java - source file
- * Storage.java
- * TraceState.java 
- * OccupiedPositionException.java
- * InvalidFileFormatException.java
+ * Storage.java - source file, for creating stacks and queues
+ * TraceState.java - source file, defines TraceState objects
+ * OccupiedPositionException.java - source file, defines error for attempting to occupy a closed position
+ * InvalidFileFormatException.java - source file, defines error for invalid file format
  * README - this file
 
 
@@ -39,59 +35,34 @@ COMPILING AND RUNNING:
 
 PROGRAM DESIGN AND IMPORTANT CONCEPTS:
 
- This is the sort of information someone who really wants to
- understand your program - possibly to make future enhancements -
- would want to know.
-
- Explain the main concepts and organization of your program so that
- the reader can understand how your program works. This is not a repeat
- of javadoc comments or an exhaustive listing of all methods, but an
- explanation of the critical algorithms and object interactions that make
- up the program.
-
- Explain the main responsibilities of the classes and interfaces that make
- up the program. Explain how the classes work together to achieve the program
- goals. If there are critical algorithms that a user should understand, 
- explain them as well.
  
- If you were responsible for designing the program's classes and choosing
- how they work together, why did you design the program this way? What, if 
- anything, could be improved? 
 
 TESTING:
 
- How did you test your program to be sure it works and meets all of the
- requirements? What was the testing strategy? What kinds of tests were run?
- Can your program handle bad input? Is your program  idiot-proof? How do you 
- know? What are the known issues / bugs remaining in your program?
+ Testing the program can be done two different ways, one being the provided tester class in the intital files, and the other being user input. Using the tester class helps to understand what areas of the program are functioning properly and where errors may occur without manually running every single test file. This will expose common errors in the code or the expected output messages.
+
+ The provided test class tests multiple aspects of the program, such if valid files are correctly read in and formatted, invalid files throw and output an exception that is handled properly, incorrect user input displays proper instructions, and all the sample files are outputted with their proper solutions. For manually testing, typing in incorrect commands, or testing a single file is helpful in identifying what is working and what may not be working, as well as verifying that all output messages are as expected.
+
+ This program can handle bad input by checking if all the command line arguments are valid, and in the case that they are not valid, displays a message with proper directions. This insures that someone who has no idea how the program works could figure out how to run the program and get output.
+
+ While the tester class and user input are sufficient ways to test, there is no way to 100% guarentee that the program is bug free for every valid file that could be used. Despite this, successful testing with these two methods provides high confidence in the programs functionality and minimal bugs.
 
 ANALYSIS:
- The choice of a stack versus a queue affects the sequence in which paths are explored in the search algorithm. The choice of a stack (a LIFO datastructure) will find a solution faster, but the choice of a queue (a FIFO datastructure) will find the shortest path faster. This happens because a stack is only exploring one path at a time, taking the TraceState that was most recently added first. The queue however, explores multiple paths at one time by taking the oldest added TraceState, this allows for traversal of multiple possible paths in a more consecutive order than a stack.
+ The choice of a stack versus a queue affects the sequence in which paths are explored in the search algorithm. The choice of a stack (a LIFO datastructure) may find a solution faster, but the choice of a queue (a FIFO datastructure) may find the shortest path faster. This happens because a stack is only exploring one path at a time, taking the TraceState that was most recently added first. The queue however, explores multiple paths at one time by taking the oldest added TraceState, this allows for traversal of multiple possible paths in a more consecutive order than a stack.
 
- This is proven with the simple addition of the
+ This is proven with the simple addition of the counters in the search algorithm that print how many TraceStates were created before a solution was found. For example, using one of the provided test files, valid3.dat, the first solution was found after 13 states when using a stack, but when using a queue the first solution was found after 59 traces. While the first solution the queue found was after 59 traces, which is more than the stack, the shortest path length was also found after 59 traces were created. Wheras with using a stack, it took the algorithm 183 cases to find the shortest path. This example shows that a queue may be more effective in finding the shortest path quicker than the choice of a stack.
+
+ Despite the queue being more likely to find a solution in fewer steps, this does not always happen, such as with sample file valid4.dat. In valid4.dat, both stack and queue found the shortest path length of 11 after finding their first solution. However, for a stack this was after 62 traces were created, and with a queue this as after 109 traces. This means that this is not always the case.
+
+ Memory use is also affected by the choice of stack or queue. In general, queues use more memory than stacks and grows exponentially, wheras a stack only explores one possible path at a time, keeping the amount of traces in memory lower.
+
+ The Big-Oh runtime order for this search algorithm is O(n)
 
 
 DISCUSSION:
  
- Discuss the issues you encountered during programming (development)
- and testing. What problems did you have? What did you have to research
- and learn on your own? What kinds of errors did you get? How did you 
- fix them?
+ While writing this program I was met with a few questions or issues. One of them was I had to research some more info on command line arguments. When checking which case was selected, I was unsure if these were read as strings or not, so I looked up a few things and found out that this was in fact the case and that -q, -s, -c, and -g are all read as strings in the command line because of the arguments being a list of strings. Another issue I ran into was when running the provided test class, I was not getting the correct outputs, however my program was technically outputting error messages when it should, it was just not cotaining the correct output.
  
- What parts of the project did you find challenging? Is there anything
- that finally "clicked" for you in the process of working on this project?
- 
- 
-EXTRA CREDIT:
-
- If the project had opportunities for extra credit that you attempted,
- be sure to call it out so the grader does not overlook it.
-
+ The planning portion and processing the task at hand and how each file worked together was a bit of a struggle for me to initally wrap my head around. But by reading each file carefully to understand how each of them worked together, when it came time to write out the algorithm based off the provided pseudocode, I was able to write this fairly effortlessly and it worked first try.
 
 ----------------------------------------------------------------------------
-
-All content in a README file is expected to be written in clear English with
-proper grammar, spelling, and punctuation. If you are not a strong writer,
-be sure to get someone else to help you with proofreading. Consider all project
-documentation to be professional writing for your boss and/or potential
-customers.
