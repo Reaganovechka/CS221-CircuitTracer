@@ -1,14 +1,10 @@
-****************
-* CircuitTracer
-* CS 221- Mason Vail
-* 12/11/2025
-* Reagan Ovechka
-**************** 
+# CircuitTracer
+
+ A java based maze traversal that implements a brute-force search algorithm to identify the shortest path through a circuit board layout. This was the final project in my CS 221 Computer Science II course taken from Mason Vail at Boise State University.
 
 OVERVIEW:
 
- CircuitTracer implements a brute-force search algorithm to navigate through a circuit board layout, identifying the shortest possible path. This algorithm can be ran using either a stack or a queue and output either to the console or using a GUI (if supported), each of these are identified in the command line
-
+ CircuitTracer is a technical exploration into the usage of Stacks and Queues. The application navigates a grid-based circuit board - with a given start and end point - to find the most efficient path between the two. It allows users to toggle between either a Stack or a Queue within the command line to observe the change in the program's efficiency.
 
 INCLUDED FILES:
 
