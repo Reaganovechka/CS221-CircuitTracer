@@ -78,70 +78,53 @@ public class CircuitTracer {
 
 		Point start = board.getStartingPoint();
 		int shortestPath = 0;
-		// int totalStates = 0;
-		// int totalSolutions = 0;
-		// int shortestTraces = 0;
 		if (board.isOpen((int) start.getX() + 1, (int) start.getY())) { // Check right
 			TraceState newState = new TraceState(board, (int) start.getX() + 1, (int) start.getY());
 			stateStore.store(newState);
-			//totalStates++;
 		}
 		if (board.isOpen((int) start.getX(), (int) start.getY() + 1)) { // Check below
 			TraceState newState = new TraceState(board, (int) start.getX(), (int) start.getY() + 1);
 			stateStore.store(newState);
-			//totalStates++;
 		}
 		if (board.isOpen((int) start.getX() - 1, (int) start.getY())) { // Check left
 			TraceState newState = new TraceState(board, (int) start.getX() - 1, (int) start.getY());
-			stateStore.store(newState);
-			//totalStates++;
+			stateStore.store(newState);;
 		}
 		if (board.isOpen((int) start.getX(), (int) start.getY() - 1)) { // Check above
 			TraceState newState = new TraceState(board, (int) start.getX(), (int) start.getY() - 1);
 			stateStore.store(newState);
-			//totalStates++;
 		}
 		while (!stateStore.isEmpty()) {
 			TraceState currentState = stateStore.retrieve();
 			if (currentState.isSolution()) {
-				//totalSolutions++;
-				//System.out.println("Total traces before solution #" + totalSolutions + ": " + totalStates);
 				if (bestPaths.isEmpty() || currentState.pathLength() == shortestPath) {
-					// if (bestPaths.isEmpty()) {
-					// 	shortestTraces = totalStates;
-					// }
 					bestPaths.add(currentState);
 					shortestPath = currentState.pathLength();
 				} else if (currentState.pathLength() < shortestPath) {
 					bestPaths.clear();
 					bestPaths.add(currentState);
 					shortestPath = currentState.pathLength();
-					// shortestTraces = totalStates;
 				}
 			} else { // Generate all valid next TraceState objects and add them to storage
 				if (currentState.isOpen(currentState.getRow() + 1, currentState.getCol())) { // Check right
 					TraceState newState = new TraceState(currentState, currentState.getRow() + 1,
 							currentState.getCol());
 					stateStore.store(newState);
-					//totalStates++;
 				}
 				if (currentState.isOpen(currentState.getRow(), currentState.getCol() + 1)) { // Check below
 					TraceState newState = new TraceState(currentState, currentState.getRow(),
 							currentState.getCol() + 1);
 					stateStore.store(newState);
-				//	totalStates++;
 				}
 				if (currentState.isOpen(currentState.getRow() - 1, currentState.getCol())) { // Check left
 					TraceState newState = new TraceState(currentState, currentState.getRow() - 1,
 							currentState.getCol());
 					stateStore.store(newState);
-					//totalStates++;
 				}
 				if (currentState.isOpen(currentState.getRow(), currentState.getCol() - 1)) { // Check above
 					TraceState newState = new TraceState(currentState, currentState.getRow(),
 							currentState.getCol() - 1);
 					stateStore.store(newState);
-					//totalStates++;
 				}
 			}
 		}
@@ -149,10 +132,6 @@ public class CircuitTracer {
 			case "-c":
 				for (int i = 0; i < bestPaths.size(); i++) {
 					System.out.println(bestPaths.get(i).toString());
-					// System.out.println("Total number of search states " + totalStates);
-					// System.out.println("Total number of solutions found: " + totalSolutions);
-					// System.out.println(
-					// 		"Shortest path length " + shortestPath + ", found after " + shortestTraces + " traces");
 				}
 				break;
 			case "-g":
@@ -162,4 +141,4 @@ public class CircuitTracer {
 
 	}
 
-} // class CircuitTracer
+} 
